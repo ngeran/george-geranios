@@ -1,0 +1,105 @@
+{{ define "main" }}
+{{ $cover := .Resources.GetMatch (.Params.image | default "cover.jpg") }}
+{{ $gallery := .Resources.Match "gallery/*" }}
+
+{{/* Back to Projects */}}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop pt-gutter">
+  <div class="max-w-[1440px] mx-auto">
+    <a href="{{ "projects/" | relLangURL }}" class="font-label-caps text-label-caps uppercase text-on-surface-variant hover:text-primary inline-flex items-center gap-1">
+      {{ partial "icon.html" (dict "name" "chevron_left" "class" "w-4 h-4") }} {{ T "back_to_projects" }}
+    </a>
+  </div>
+</section>
+
+{{/* Title header — meta line + big title */}}
+<header class="px-edge-margin-mobile lg:px-edge-margin-desktop pt-section-gap pb-gutter">
+  <div class="max-w-[1440px] mx-auto">
+    <div class="flex flex-wrap items-baseline gap-x-gutter gap-y-2 font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">
+      {{ with .Params.category }}<span>{{ . }}</span>{{ end }}
+      {{ with .Params.year }}<span aria-hidden="true">·</span><span class="text-primary">{{ . }}</span>{{ end }}
+      {{ with .Params.location }}<span aria-hidden="true">·</span><span>{{ . }}</span>{{ end }}
+      {{ if not .Date.IsZero }}<span aria-hidden="true">·</span><span>{{ .Date.Format "2006" }}</span>{{ end }}
+    </div>
+    <h1 class="font-display-xl text-display-xl-mobile lg:text-display-xl text-primary uppercase leading-[0.95]">{{ .Title }}</h1>
+  </div>
+</header>
+
+{{/* Lead image — the visual anchor */}}
+{{ with $cover }}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop pb-section-gap">
+  <div class="max-w-[1440px] mx-auto bg-surface-container overflow-hidden">
+    {{ partial "responsive-image.html" (dict "img" . "alt" $.Title "sizes" "(min-width:1024px) 90vw, 100vw" "lazy" false) }}
+  </div>
+</section>
+{{ end }}
+
+{{/* Description — main readable column */}}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop pb-section-gap">
+  <div class="max-w-[1440px] mx-auto">
+    {{ with .Params.series }}<p class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-6">{{ T "series_label" }} — {{ . }}</p>{{ end }}
+    <div class="font-body-lg text-body-lg text-on-surface max-w-3xl space-y-6">{{ .Content }}</div>
+  </div>
+</section>
+
+{{/* Specification strip — metadata recomposed as a compact grid */}}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop pb-section-gap">
+  <div class="max-w-[1440px] mx-auto">
+    <dl class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-gutter gap-y-unit border-t border-structural-gray pt-gutter">
+      <div>
+        <dt class="font-label-caps text-label-caps uppercase text-on-surface-variant/60 mb-1">Year</dt>
+        <dd class="font-body-md text-on-surface">{{ with .Params.year }}{{ . }}{{ end }}</dd>
+      </div>
+      <div>
+        <dt class="font-label-caps text-label-caps uppercase text-on-surface-variant/60 mb-1">Date</dt>
+        <dd class="font-body-md text-on-surface">{{ if not .Date.IsZero }}{{ .Date.Format "January 2, 2006" }}{{ end }}</dd>
+      </div>
+      <div>
+        <dt class="font-label-caps text-label-caps uppercase text-on-surface-variant/60 mb-1">Category</dt>
+        <dd class="font-body-md text-on-surface">{{ with .Params.category }}{{ . }}{{ end }}</dd>
+      </div>
+      <div>
+        <dt class="font-label-caps text-label-caps uppercase text-on-surface-variant/60 mb-1">Location</dt>
+        <dd class="font-body-md text-on-surface">{{ with .Params.location }}{{ . }}{{ end }}</dd>
+      </div>
+      <div>
+        <dt class="font-label-caps text-label-caps uppercase text-on-surface-variant/60 mb-1">Medium</dt>
+        <dd class="font-body-md text-on-surface">{{ with .Params.medium }}{{ . }}{{ end }}</dd>
+      </div>
+      <div>
+        <dt class="font-label-caps text-label-caps uppercase text-on-surface-variant/60 mb-1">Dimensions</dt>
+        <dd class="font-body-md text-on-surface">{{ with .Params.dimensions }}{{ . }}{{ end }}</dd>
+      </div>
+      <div>
+        <dt class="font-label-caps text-label-caps uppercase text-on-surface-variant/60 mb-1">Edition</dt>
+        <dd class="font-body-md text-on-surface">{{ with .Params.edition }}{{ . }}{{ end }}</dd>
+      </div>
+      <div>
+        <dt class="font-label-caps text-label-caps uppercase text-on-surface-variant/60 mb-1">Availability</dt>
+        <dd class="font-body-md capitalize text-on-surface">{{ with .Params.availability }}{{ . }}{{ end }}</dd>
+      </div>
+      {{ with .Params.series }}<div>
+        <dt class="font-label-caps text-label-caps uppercase text-on-surface-variant/60 mb-1">Series</dt>
+        <dd class="font-body-md text-on-surface">{{ . }}</dd>
+      </div>{{ end }}
+      {{ with .Params.ref }}<div>
+        <dt class="font-label-caps text-label-caps uppercase text-on-surface-variant/60 mb-1">Reference</dt>
+        <dd class="font-body-md text-on-surface">#{{ . }}</dd>
+      </div>{{ end }}
+    </dl>
+  </div>
+</section>
+
+{{/* Additional photos — shown only when the project has more than the cover */}}
+{{ with $gallery }}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop pb-section-gap">
+  <div class="max-w-[1440px] mx-auto space-y-gutter">
+    {{ range . }}
+    {{ $full := .Process "resize 2048x webp q78" }}
+    <a href="{{ $full.RelPermalink }}" data-lightbox class="group block bg-surface-container overflow-hidden cursor-zoom-in">
+      {{ partial "responsive-image.html" (dict "img" . "alt" "" "sizes" "(min-width:1024px) 90vw, 100vw" "imgclass" "w-full h-auto transition-transform duration-700 group-hover:scale-[1.01]") }}
+    </a>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
+{{ end }}

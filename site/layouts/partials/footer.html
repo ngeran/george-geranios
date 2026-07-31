@@ -1,0 +1,11 @@
+<footer class="w-full bg-background border-t border-structural-gray mt-section-gap">
+  <div class="max-w-[1440px] mx-auto px-edge-margin-mobile lg:px-edge-margin-desktop py-gutter flex flex-col md:flex-row justify-between items-center gap-unit">
+    <span class="font-caption text-caption text-on-surface-variant uppercase tracking-widest">© {{ now.Format "2006" }} {{ .Site.Title }}</span>
+    <div class="flex gap-gutter items-center">
+      <a class="font-caption text-caption text-on-surface-variant hover:text-primary uppercase tracking-widest inline-flex items-center gap-1" href="{{ .Site.Params.instagram }}" target="_blank" rel="noopener">
+        {{ partial "icon.html" (dict "name" "instagram" "class" "w-4 h-4") }} Instagram
+      </a>
+      <a class="font-caption text-caption text-on-surface-variant hover:text-primary uppercase tracking-widest" href="mailto:{{ .Site.Params.email }}">Contact</a>
+    </div>
+  </div>
+</footer>

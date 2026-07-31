@@ -1,0 +1,37 @@
+{{/*
+  catalogue-row.html — one systematic-catalogue row. Shared by Projects,
+  Publications, and Available. Uses publisher/pages for publications and
+  medium/dimensions for projects (fallback chain in the meta columns).
+*/}}
+{{- $title := .Title -}}
+{{- $img := .Resources.GetMatch (.Params.image | default "cover.jpg") -}}
+{{- $y := .Params.year -}}
+{{- $era := "2011-Present" -}}
+{{- if lt $y 1990 }}{{- $era = "1980-1989" -}}{{- else if lt $y 2000 }}{{- $era = "1990-1999" -}}{{- else if lt $y 2011 }}{{- $era = "2000-2010" -}}{{- end -}}
+<article class="work-row group py-6 md:py-8 grid grid-cols-[6rem_1fr] md:grid-cols-12 gap-gutter items-center w-full hover:bg-surface-container transition-colors duration-300" data-year="{{ $y }}" data-era="{{ $era }}" data-ref="{{ with .Params.ref }}{{ . }}{{ end }}">
+  <div class="hidden md:block md:col-span-1 font-label-caps text-label-caps text-on-surface-variant opacity-50">{{ with .Params.ref }}#{{ . }}{{ else }}—{{ end }}</div>
+
+  <div class="md:col-span-2">
+    <a href="{{ .RelPermalink }}" class="block aspect-[4/5] bg-surface-container-low group-hover:bg-surface-container overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+      {{ with $img }}{{ partial "responsive-image.html" (dict "img" . "alt" $title "sizes" "(min-width:768px) 12vw, 96px" "widths" (slice 240 400 640) "class" "block w-full h-full" "imgclass" "w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000") }}{{ end }}
+    </a>
+  </div>
+
+  <div class="md:col-span-4 min-w-0">
+    <div class="font-label-caps text-[10px] text-on-surface-variant uppercase mb-1 md:hidden">{{ T "ref_label" }}: {{ with .Params.ref }}#{{ . }}{{ end }}</div>
+    <h3 class="font-headline-md text-headline-md text-primary uppercase"><a href="{{ .RelPermalink }}" class="group-hover:translate-x-2 inline-block transition-transform duration-500">{{ .Title }}</a></h3>
+    {{ with .Params.series }}<p class="font-caption text-caption text-on-surface-variant mt-1">{{ T "series_label" }}: {{ . }}</p>{{ end }}
+    <div class="md:hidden mt-2 flex flex-wrap gap-x-gutter gap-y-1 font-caption text-caption text-on-surface-variant uppercase">
+      <span>{{ $y }}</span>
+      {{ with .Params.publisher }}<span>{{ . }}</span>{{ else }}{{ with .Params.medium }}<span>{{ . }}</span>{{ end }}{{ end }}
+      {{ with .Params.pages }}<span>{{ . }}</span>{{ else }}{{ with .Params.dimensions }}<span>{{ . }}</span>{{ end }}{{ end }}
+    </div>
+  </div>
+
+  <div class="hidden md:block md:col-span-2"><span class="font-label-caps text-label-caps text-primary">{{ $y }}</span></div>
+
+  <div class="hidden md:block md:col-span-3 md:text-right font-caption text-caption text-on-surface-variant leading-relaxed">
+    {{ with .Params.publisher }}<p>{{ . }}</p>{{ else }}{{ with .Params.medium }}<p>{{ . }}</p>{{ end }}{{ end }}
+    {{ with .Params.pages }}<p>{{ . }}</p>{{ else }}{{ with .Params.dimensions }}<p>{{ . }}</p>{{ end }}{{ end }}
+  </div>
+</article>

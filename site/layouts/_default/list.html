@@ -1,0 +1,18 @@
+{{ define "main" }}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop py-section-gap">
+  <div class="max-w-[1440px] mx-auto">
+    <div class="border-b border-structural-gray pb-unit mb-section-gap">
+      <h1 class="font-display-xl text-display-xl-mobile lg:text-display-xl uppercase tracking-tighter">{{ .Title }}</h1>
+    </div>
+    <div class="divide-y divide-structural-gray">
+    {{ range sort .Pages "Date" "desc" }}
+      <a href="{{ .RelPermalink }}" class="group block py-gutter grid grid-cols-1 md:grid-cols-12 gap-gutter items-baseline -mx-4 px-4 rounded hover:bg-surface-container-low transition-colors duration-300">
+        <span class="md:col-span-2 font-label-caps text-label-caps uppercase text-on-surface-variant">{{ if not .Date.IsZero }}{{ .Date.Format "2006" }}{{ end }}</span>
+        <span class="md:col-span-7 font-headline-md uppercase group-hover:translate-x-2 inline-block transition-transform duration-300">{{ .Title }}</span>
+        <span class="md:col-span-3 font-caption text-caption text-on-surface-variant md:text-right">{{ with .Params.venue }}{{ . }}{{ end }}</span>
+      </a>
+    {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

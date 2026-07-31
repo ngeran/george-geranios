@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="{{ .Site.Language.Lang | default "en" }}">
+{{ partial "head.html" . }}
+<body class="bg-background font-body-md text-on-background antialiased selection:bg-primary selection:text-on-primary">
+  {{ partial "sidebar.html" . }}
+  <div class="pt-16 lg:pt-0 lg:ml-[240px] min-h-screen flex flex-col">
+    <main class="flex-1">
+      {{ block "main" . }}{{ end }}
+    </main>
+    {{ if not .IsHome }}{{ partial "footer.html" . }}{{ end }}
+  </div>
+  {{ partial "scripts.html" . }}
+</body>
+</html>

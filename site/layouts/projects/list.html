@@ -1,0 +1,82 @@
+{{ define "main" }}
+{{ $projects := sort .Pages "Date" "desc" }}
+{{ $count := len $projects }}
+{{ $shownTpl := T "showing_template" }}
+
+{{/* Archival header */}}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop py-section-gap border-b border-structural-gray">
+  <div class="max-w-[1440px] mx-auto flex flex-col lg:flex-row lg:items-end justify-between gap-gutter">
+    <div class="max-w-2xl">
+      <span class="font-label-caps text-label-caps text-on-surface-variant mb-4 block">{{ T "inventory_index" }}</span>
+      <h1 class="font-display-xl text-display-xl-mobile lg:text-display-xl text-primary leading-none uppercase">{{ .Title }}</h1>
+    </div>
+    <div class="flex flex-wrap gap-8 items-center font-label-caps text-label-caps border-t lg:border-t-0 pt-8 lg:pt-0 border-structural-gray">
+      <div class="flex flex-col gap-2">
+        <span class="text-on-surface-variant/50">{{ T "period" }}</span>
+        <select id="work-period" class="bg-transparent border-none p-0 focus:ring-0 cursor-pointer uppercase text-primary font-bold">
+          <option value="all">{{ T "all_eras" }}</option>
+          <option value="1980-1989">1980 — 1989</option>
+          <option value="1990-1999">1990 — 1999</option>
+          <option value="2000-2010">2000 — 2010</option>
+          <option value="2011-Present">2011 — Present</option>
+        </select>
+      </div>
+      <div class="w-px h-8 bg-structural-gray hidden lg:block"></div>
+      <div class="flex flex-col gap-2">
+        <span class="text-on-surface-variant/50">{{ T "sort_by" }}</span>
+        <div class="flex gap-4" id="work-sort">
+          <button type="button" data-sort="chrono" class="text-primary hover:opacity-50 transition-opacity uppercase">{{ T "chronological" }}</button>
+          <span class="text-structural-gray">/</span>
+          <button type="button" data-sort="ref" class="text-on-surface-variant hover:text-primary transition-colors uppercase">{{ T "reference_no" }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{/* Sticky column header */}}
+<div class="sticky top-16 lg:top-0 z-40 bg-background/90 backdrop-blur-sm border-b border-structural-gray px-edge-margin-mobile lg:px-edge-margin-desktop hidden md:block">
+  <div class="max-w-[1440px] mx-auto py-4 grid grid-cols-12 gap-gutter font-label-caps text-[10px] tracking-[0.2em] text-on-surface-variant uppercase">
+    <div class="col-span-1">{{ T "ref_label" }}</div>
+    <div class="col-span-2">{{ T "visual" }}</div>
+    <div class="col-span-4">{{ T "identification" }}</div>
+    <div class="col-span-2">{{ T "year" }}</div>
+    <div class="col-span-3 text-right">{{ T "dimensions_medium" }}</div>
+  </div>
+</div>
+
+{{/* Systematic list */}}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop bg-background">
+  <div class="max-w-[1440px] mx-auto">
+    <div id="work-list" class="divide-y divide-structural-gray">
+    {{ range $projects }}{{ partial "catalogue-row.html" . }}{{ end }}
+    </div>
+  </div>
+</section>
+
+{{/* Count */}}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop py-section-gap bg-background">
+  <div class="max-w-[1440px] mx-auto flex flex-col items-center gap-unit">
+    <div class="w-full h-px bg-structural-gray mb-16"></div>
+    <span id="work-count" data-showing-template="{{ $shownTpl }}" class="font-label-caps text-label-caps text-on-surface-variant mb-4">{{ replace (replace $shownTpl "{shown}" (string $count)) "{total}" (string $count) }}</span>
+  </div>
+</section>
+
+{{/* Technical information */}}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop py-gutter bg-surface-container-low border-t border-structural-gray">
+  <div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-gutter text-on-surface-variant">
+    <div>
+      <p class="font-label-caps text-label-caps mb-2 text-primary">{{ T "catalogue_raisonne" }}</p>
+      <p class="font-caption text-caption">{{ T "cat_body_1" }}</p>
+    </div>
+    <div>
+      <p class="font-label-caps text-label-caps mb-2 text-primary">{{ T "methodology" }}</p>
+      <p class="font-caption text-caption">{{ T "cat_body_2" }}</p>
+    </div>
+    <div>
+      <p class="font-label-caps text-label-caps mb-2 text-primary">{{ T "copyright" }}</p>
+      <p class="font-caption text-caption">© {{ now.Format "2006" }} {{ .Site.Title }}. {{ T "cat_body_3" }}</p>
+    </div>
+  </div>
+</section>
+{{ end }}

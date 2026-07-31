@@ -1,0 +1,26 @@
+{{/*
+  works-table.html — the sparse Year/Title table (reference 3), the Gursky
+  signature listing. Sorted by `year` desc. Reused on the home recent-works strip.
+  Usage: {{ partial "works-table.html" (dict "pages" $works "limit" 8) }}
+*/}}
+{{- $pages := .pages -}}
+{{- $limit := .limit | default 0 -}}
+{{- $rows := sort $pages "Date" "desc" -}}
+{{- if gt $limit 0 -}}{{- $rows = first $limit $rows -}}{{- end -}}
+<table class="w-full border-collapse">
+  <tbody>
+  {{- range $rows -}}
+    <tr class="border-b border-structural-gray group hover:bg-surface-container-low transition-colors duration-300">
+      <td class="py-unit pr-gutter align-baseline w-24 font-body-md text-on-surface-variant whitespace-nowrap">
+        {{ with .Params.year }}{{ . }}{{ else }}—{{ end }}
+      </td>
+      <td class="py-unit align-baseline">
+        <a href="{{ .RelPermalink }}" class="font-headline-md uppercase group-hover:translate-x-2 inline-block transition-transform duration-300">
+          {{ .Title }}
+        </a>
+        {{ with .Params.location }}<span class="font-caption text-caption text-on-surface-variant uppercase block">{{ . }}</span>{{ end }}
+      </td>
+    </tr>
+  {{- end -}}
+  </tbody>
+</table>

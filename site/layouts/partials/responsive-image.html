@@ -1,0 +1,34 @@
+{{/*
+  responsive-image.html — the keystone partial.
+  Emits a <picture> with WebP srcset over several widths + a JPEG fallback <img>.
+  Width/height are set on <img> to prevent CLS; lazy by default (hero passes lazy=false).
+
+  Usage:
+    {{ partial "responsive-image.html" (dict "img" $r "alt" "..." "sizes" "(min-width:1024px) 50vw, 100vw") }}
+  Optional: "widths" (slice), "lazy" (bool), "class" (on <picture>), "imgclass" (on <img>).
+  `img` may be a page resource (.Resources) or a global resource (resources.Get).
+*/}}
+{{- $img := .img -}}
+{{- $alt := .alt | default "" -}}
+{{- $sizes := .sizes | default "100vw" -}}
+{{- $widths := .widths | default (slice 480 800 1200 1600 2048) -}}
+{{- $lazy := .lazy | default true -}}
+{{- $class := .class | default "block" -}}
+{{- $imgclass := .imgclass | default "w-full h-auto" -}}
+{{- if not $img -}}
+  {{/* graceful fallback so a missing resource never breaks the build */}}
+  <div class="bg-surface-container aspect-[4/3] flex items-center justify-center text-on-surface-variant font-caption">[image missing]</div>
+{{- else -}}
+  {{- $fallback := $img.Process (printf "resize %dx jpg q80" (index $widths 2)) -}}
+  <picture class="{{ $class }}">
+    {{- range $w := $widths -}}
+      {{- $r := $img.Process (printf "resize %dx webp q72" $w) -}}
+    <source type="image/webp" srcset="{{ $r.RelPermalink }} {{ $r.Width }}w" sizes="{{ $sizes }}">
+    {{- end }}
+    <img src="{{ $fallback.RelPermalink }}"
+         width="{{ $fallback.Width }}" height="{{ $fallback.Height }}"
+         alt="{{ $alt }}"
+         class="{{ $imgclass }}"
+         {{ if $lazy }}loading="lazy" decoding="async"{{ else }}loading="eager" fetchpriority="high"{{ end }}>
+  </picture>
+{{- end -}}

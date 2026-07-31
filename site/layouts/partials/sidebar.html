@@ -1,0 +1,32 @@
+{{/*
+  Left sidebar (desktop) / top bar (mobile). Name on ONE line at top, nav below,
+  then a GR/EN language switch. Internal links use relLangURL so they respect /el/.
+*/}}
+<aside class="fixed top-0 left-0 z-50 w-full h-16 lg:h-screen lg:w-[248px] bg-background/90 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-structural-gray flex items-center lg:items-stretch justify-between lg:flex-col px-edge-margin-mobile lg:px-0">
+  {{/* Name — one line */}}
+  <div class="lg:px-gutter lg:pt-gutter flex items-center lg:block">
+    <a href="{{ .Site.Home.RelPermalink }}" class="block">
+      <span class="font-display-xl text-[18px] lg:text-[22px] leading-none tracking-tight text-primary whitespace-nowrap">George Geranios</span>
+    </a>
+  </div>
+
+  {{/* Nav */}}
+  <nav class="flex items-center gap-gutter lg:flex-col lg:items-stretch lg:gap-0 lg:px-gutter lg:mt-6 overflow-x-auto whitespace-nowrap">
+    {{- $current := .RelPermalink -}}
+    {{- range .Site.Menus.main -}}
+      {{- $active := or (eq $current .URL) (and (ne .URL "/") (hasPrefix $current .URL)) -}}
+      <a href="{{ .URL | relLangURL }}"
+         class="font-label-caps text-label-caps uppercase transition-colors whitespace-nowrap lg:py-2 {{ if $active }}text-primary{{ else }}text-on-surface-variant hover:text-primary{{ end }}">
+        {{ .Name }}
+      </a>
+    {{- end -}}
+  </nav>
+
+  {{/* Contact — bottom (desktop only) */}}
+  <div class="hidden lg:block px-gutter lg:mt-auto lg:pb-gutter">
+    <div class="border-t border-structural-gray pt-gutter space-y-1">
+      <a href="mailto:{{ .Site.Params.email }}" class="font-caption text-caption text-on-surface-variant hover:text-primary block">{{ .Site.Params.email }}</a>
+      <a href="{{ .Site.Params.instagram }}" target="_blank" rel="noopener" class="font-caption text-caption text-on-surface-variant hover:text-primary block">Instagram</a>
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,228 @@
+/* =========================================================================
+   Tailwind v4 design system — translated from the reference designs.
+   Compiled in the devShell → site/static/css/main.css (committed).
+   The Nix build runs only `hugo`, so Tailwind is NOT in the build path.
+   Recompile after editing this or any layout class:  `just assets`
+   ========================================================================= */
+@import "tailwindcss";
+
+/* Scan layouts (and any HTML inside content) for used utility classes. */
+@source "../layouts/**/*.html";
+@source "../content/**/*.md";
+
+@theme {
+  /* ── Surfaces ───────────────────────────────────────────────────── */
+  --color-background: #f9f9f9;
+  --color-surface: #f9f9f9;
+  --color-surface-bright: #f9f9f9;
+  --color-canvas-off-white: #f9f9f9;
+  --color-surface-dim: #dadada;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f3f3f4;
+  --color-surface-container: #eeeeee;
+  --color-surface-container-high: #e8e8e8;
+  --color-surface-container-highest: #e2e2e2;
+  --color-surface-variant: #e2e2e2;
+  --color-structural-gray: #e0e0e0;
+
+  /* ── Primary (black ink) ─────────────────────────────────────────── */
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #1b1b1b;
+  --color-on-primary-container: #848484;
+  --color-on-primary-fixed: #1b1b1b;
+  --color-on-primary-fixed-variant: #474747;
+  --color-primary-fixed: #e2e2e2;
+  --color-primary-fixed-dim: #c6c6c6;
+
+  /* ── Secondary / tertiary ────────────────────────────────────────── */
+  --color-secondary: #5e5e5e;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #e3e2e2;
+  --color-on-secondary-container: #646464;
+  --color-on-secondary-fixed: #1b1c1c;
+  --color-on-secondary-fixed-variant: #464747;
+  --color-secondary-fixed: #e3e2e2;
+  --color-secondary-fixed-dim: #c7c6c6;
+  --color-tertiary: #000000;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #1b1b1b;
+  --color-on-tertiary-container: #848484;
+  --color-on-tertiary-fixed: #1b1b1b;
+  --color-on-tertiary-fixed-variant: #474747;
+  --color-tertiary-fixed: #e2e2e2;
+  --color-tertiary-fixed-dim: #c6c6c6;
+
+  /* ── Foreground / misc ───────────────────────────────────────────── */
+  --color-on-background: #1a1c1c;
+  --color-on-surface: #1a1c1c;
+  --color-on-surface-variant: #4c4546;
+  --color-inverse-surface: #2f3131;
+  --color-inverse-on-surface: #f0f1f1;
+  --color-inverse-primary: #c6c6c6;
+  --color-surface-tint: #5e5e5e;
+  --color-outline: #7e7576;
+  --color-outline-variant: #cfc4c5;
+  --color-deep-obsidian: #0a0a0a;
+
+  /* ── Error ───────────────────────────────────────────────────────── */
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  /* ── Spacing scale (named) ───────────────────────────────────────── */
+  --spacing-section-gap: 128px;
+  --spacing-unit: 8px;
+  --spacing-gutter: 32px;
+  --spacing-edge-margin-mobile: 24px;
+  --spacing-edge-margin-desktop: 64px;
+
+  /* ── Radius ──────────────────────────────────────────────────────── */
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  /* ── Font families ───────────────────────────────────────────────── */
+  --font-display-xl: "Archivo Narrow", sans-serif;
+  --font-display-xl-mobile: "Archivo Narrow", sans-serif;
+  --font-headline-lg: "Archivo Narrow", sans-serif;
+  --font-headline-md: "Archivo Narrow", sans-serif;
+  --font-label-caps: "Archivo Narrow", sans-serif;
+  --font-body-md: "Hanken Grotesk", sans-serif;
+  --font-body-lg: "Hanken Grotesk", sans-serif;
+  --font-caption: "Hanken Grotesk", sans-serif;
+
+  /* ── Font sizes (with line-height / tracking / weight) ───────────── */
+  --text-display-xl: 80px;
+  --text-display-xl--line-height: 88px;
+  --text-display-xl--letter-spacing: -0.02em;
+  --text-display-xl--font-weight: 400;
+
+  --text-display-xl-mobile: 48px;
+  --text-display-xl-mobile--line-height: 52px;
+  --text-display-xl-mobile--letter-spacing: -0.01em;
+  --text-display-xl-mobile--font-weight: 400;
+
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 40px;
+  --text-headline-lg--letter-spacing: 0.02em;
+  --text-headline-lg--font-weight: 500;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--letter-spacing: 0.02em;
+  --text-headline-md--font-weight: 500;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 28px;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+  --text-body-md--font-weight: 400;
+
+  --text-label-caps: 12px;
+  --text-label-caps--line-height: 16px;
+  --text-label-caps--letter-spacing: 0.1em;
+  --text-label-caps--font-weight: 600;
+
+  --text-caption: 12px;
+  --text-caption--line-height: 16px;
+  --text-caption--font-weight: 400;
+}
+
+@layer base {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    overscroll-behavior: none;
+    overflow-x: hidden;
+  }
+}
+
+/* ── Lightbox (paired with static/js/lightbox.js) ─────────────────────── */
+.lightbox {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox::backdrop {
+  background: rgba(0, 0, 0, 0.92);
+}
+.lightbox {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.lightbox__frame {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+.lightbox__img {
+  max-width: 90vw;
+  max-height: 86vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
+.lightbox__watermark {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='320'%20height='150'%3E%3Ctext%20x='0'%20y='75'%20fill='rgba(255,255,255,0.22)'%20font-family='Arial,sans-serif'%20font-size='22'%20transform='rotate(-28%20160%2075)'%3Egeorge%20geranios%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 320px 150px;
+}
+.lightbox__btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+.lightbox__btn svg {
+  width: 2rem;
+  height: 2rem;
+}
+.lightbox__close {
+  top: 1.5rem;
+  right: 1.5rem;
+  left: auto;
+  transform: none;
+}
+.lightbox__prev {
+  left: 1rem;
+}
+.lightbox__next {
+  right: 1rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

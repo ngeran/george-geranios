@@ -1,0 +1,22 @@
+{{ define "main" }}
+{{ $works := where .Site.RegularPages "Section" "projects" }}
+{{ $candidates := first 12 (sort $works "Date" "desc") }}
+{{ with $candidates }}
+<section class="relative w-full h-[calc(100vh-4rem)] lg:h-screen overflow-hidden bg-primary">
+  {{ range $i, $w := . }}
+    {{ $img := $w.Resources.GetMatch ($w.Params.image | default "cover.jpg") }}
+    {{ with $img }}
+  <figure class="hero-candidate absolute inset-0 {{ if gt $i 0 }}hidden{{ end }}">
+    <a href="{{ $w.RelPermalink }}" class="block w-full h-full">
+      {{ partial "responsive-image.html" (dict "img" . "alt" $w.Title "sizes" "100vw" "lazy" (eq $i 0) "class" "block w-full h-full" "imgclass" "w-full h-full object-cover") }}
+    </a>
+    <figcaption class="absolute bottom-0 left-0 right-0 px-edge-margin-mobile lg:px-gutter pb-gutter pt-24 bg-linear-to-t from-black/70 to-transparent pointer-events-none">
+      <span class="font-label-caps text-label-caps text-white/80 uppercase">{{ with $w.Params.year }}{{ . }}{{ end }}</span>
+      <span class="block font-headline-md text-[18px] text-white uppercase">{{ $w.Title }}</span>
+    </figcaption>
+  </figure>
+    {{ end }}
+  {{ end }}
+</section>
+{{ end }}
+{{ end }}

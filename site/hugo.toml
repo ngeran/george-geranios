@@ -1,0 +1,45 @@
+baseURL = "https://example.org/"
+title = "George Geranios"
+disableKinds = ["taxonomy", "term"]
+
+[params]
+  description = "Selected photographic works by George Geranios."
+  author = "George Geranios"
+  ogImage = "/og-default.jpg"
+  instagram = "https://instagram.com/"
+  email = "studio@example.com"
+
+[imaging]
+  quality = 75
+  bg = "white"
+  [imaging.exif]
+    disableDate = false
+    disableLatLong = true
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[[menu.main]]
+  name = "Projects"
+  url = "/projects/"
+  weight = 1
+[[menu.main]]
+  name = "Publications"
+  url = "/publications/"
+  weight = 2
+[[menu.main]]
+  name = "Available Works"
+  url = "/available/"
+  weight = 3
+[[menu.main]]
+  name = "Biography"
+  url = "/about/"
+  weight = 4
+[[menu.main]]
+  name = "News"
+  url = "/news/"
+  weight = 5
+[[menu.main]]
+  name = "Contact"
+  url = "/contact/"
+  weight = 6

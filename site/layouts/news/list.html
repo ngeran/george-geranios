@@ -1,0 +1,28 @@
+{{ define "main" }}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop py-section-gap">
+  <div class="max-w-[1440px] mx-auto">
+    <div class="border-b border-structural-gray pb-unit mb-section-gap">
+      <h1 class="font-display-xl text-display-xl-mobile lg:text-display-xl uppercase tracking-tighter">{{ .Title }}</h1>
+    </div>
+    {{ $entries := sort .Pages "Date" "desc" }}
+    {{ range $i, $e := $entries }}
+    <article class="group relative py-section-gap border-b border-structural-gray">
+      <a href="{{ $e.RelPermalink }}" class="absolute inset-0 z-10" aria-label="{{ $e.Title }}"></a>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-start relative">
+        <div class="md:col-span-2">
+          <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">{{ printf "%02d" (add $i 1) }} / {{ printf "%02d" (len $entries) }}</span>
+          <p class="font-caption text-caption text-on-surface-variant mt-2 uppercase tracking-tighter">{{ $e.Date.Format "Jan 02, 2006" }}</p>
+        </div>
+        <div class="md:col-span-7">
+          <h2 class="font-headline-lg text-headline-lg text-primary group-hover:pl-4 transition-all duration-500">{{ $e.Title }}</h2>
+          {{ with $e.Summary }}<p class="font-body-md text-body-md text-on-surface-variant mt-6 max-w-xl">{{ plainify . | truncate 160 }}</p>{{ end }}
+        </div>
+        <div class="md:col-span-3 flex justify-end items-start pt-2">
+          <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-primary">{{ partial "icon.html" (dict "name" "arrow_outward") }}</span>
+        </div>
+      </div>
+    </article>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

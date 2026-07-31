@@ -1,0 +1,18 @@
+{{ define "main" }}
+<section class="px-edge-margin-mobile lg:px-edge-margin-desktop py-section-gap">
+  <div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter">
+    <div class="md:col-span-3">
+      <h1 class="font-display-xl text-display-xl-mobile lg:text-display-xl uppercase tracking-tighter">{{ .Title }}</h1>
+    </div>
+    <div class="md:col-span-8 md:col-start-5 max-w-2xl">
+      {{ with .Params.portrait }}{{ with resources.Get . }}
+      <div class="mb-section-gap max-w-xs">{{ partial "responsive-image.html" (dict "img" . "alt" "Portrait" "sizes" "(min-width:768px) 33vw, 100vw") }}</div>
+      {{ end }}{{ end }}
+      {{ if not .Date.IsZero }}<p class="font-caption text-caption text-on-surface-variant uppercase tracking-widest mb-section-gap">{{ .Date.Format "January 2, 2006" }}</p>{{ end }}
+      <div class="font-body-lg text-body-lg text-on-surface space-y-6">
+        {{ .Content }}
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}
