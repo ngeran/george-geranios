@@ -1,35 +1,33 @@
 name: Deploy to Cloudflare Pages
 
-# Builds the site with Nix (reproducible, same bytes as the local `just cf`)
-# and uploads it via wrangler. This is what makes a CMS commit auto-publish:
-# commit → this Action → `wrangler pages deploy`. Repo-root `functions/`
-# (added later) is picked up automatically because the action runs from the
-# repo root.
 on:
   push:
     branches: [main]
-  workflow_dispatch:
-
-permissions:
-  contents: read
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v30
+        uses: DeterminateSystems/nix-installer-action@v4
         with:
-          nix_path: nixpkgs=channel:nixos-26.05
-
-      - name: Build site (Nix)
-        run: nix build .#site --out-link site-out
+          extra-conf: |
+            accept-flake-config = true
+            
+      - name: Build Hugo site with Nix
+        run: |
+          nix build .#site
+          # This creates ./result with the built site
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy site-out --project-name hugo-site --branch main
+          projectName: hugo-site
+          directory: ./result
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
